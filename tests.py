@@ -27,4 +27,22 @@ def test_get_tasks():
       assert "title" in response_json[0]
       assert "description" in response_json[0]
       assert "completed" in response_json[0]
+def test_update_task():
+  new_task = {
+      "title": "Test Task",
+      "description": "This is a test task."
+  }
+  response = requests.post(f"{BASE_URL}/tasks", json=new_task)
+  task_id = response.json().get("task").get("id")
   
+  updated_task = {
+      "title": "Updated Task",
+      "description": "This is an updated test task.",
+      "completed": True
+  }
+  
+  response = requests.put(f"{BASE_URL}/tasks/{task_id}", json=updated_task)
+  
+  assert response.status_code == 200
+  response_json = response.json()
+  assert response_json.get("task").get("title") == updated_task["title"]
