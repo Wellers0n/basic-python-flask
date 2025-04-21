@@ -16,3 +16,15 @@ def test_create_task():
   assert "message" in response_json
   assert "id" in response_json.get("task")
   
+def test_get_tasks():
+  response = requests.get(f"{BASE_URL}/tasks")
+  
+  assert response.status_code == 200
+  response_json = response.json()
+  assert isinstance(response_json, list)
+  if len(response_json) > 0:
+      assert "id" in response_json[0]
+      assert "title" in response_json[0]
+      assert "description" in response_json[0]
+      assert "completed" in response_json[0]
+  
