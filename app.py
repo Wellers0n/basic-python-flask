@@ -39,4 +39,18 @@ if __name__ == '__main__':
             return jsonify({"message": "Task updated successfully!", "task": task.to_dict()}), 200
         return jsonify({"message": "Task not found!"}), 404
 
+    @app.route('/tasks/<int:task_id>', methods=['DELETE'])
+    def delete_task(task_id):
+        global tasks
+        tasks = [task for task in tasks if task.id != task_id]
+        return jsonify({"message": "Task deleted successfully!"}), 200
+      
+    @app.route('/tasks/<int:task_id>/complete', methods=['POST'])
+    def complete_task(task_id):
+        task = next((task for task in tasks if task.id == task_id), None)
+        if task:
+            task.completed = True
+            return jsonify({"message": "Task marked as completed!", "task": task.to_dict()}), 200
+        return jsonify({"message": "Task not found!"}), 404
+
     app.run(debug=True)
