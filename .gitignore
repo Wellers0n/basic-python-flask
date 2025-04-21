@@ -2,3 +2,4 @@
 __pycache__
 .pdm-python
 pdm.lock
+.pytest_cache
